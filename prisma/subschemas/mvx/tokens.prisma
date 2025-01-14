@@ -1,0 +1,85 @@
+// ---------------------
+// ---------------------
+//        TOKENS
+// ---------------------
+// ---------------------
+
+// ------------------------------------------
+//    Common: Shared by all types of token
+// ------------------------------------------
+
+enum Token_Type {
+  FungibleESDT
+  NonFungibleESDT
+  SemiFungibleESDT
+  MetaESDT
+}
+
+enum Asset_Status {
+  active
+  inactive
+}
+
+// ----------------------------------
+//        ESDT: (FungibleESDT)
+// ----------------------------------
+
+model Esdt {
+  id                       Int          @id @default(autoincrement())
+  type                     Token_Type
+  identifier               String       @unique
+  name                     String
+  ticker                   String
+  owner                    String
+  minted                   String
+  burnt                    String
+  initialMinted            String
+  decimals                 Int
+  isPaused                 Boolean      @default(false)
+  assets                   Esdt_Assets? @relation(fields: [assetsId], references: [id])
+  assetsId                 Int?         @unique
+  transactions             Int?
+  accounts                 Int?
+  canUpgrade               Boolean      @default(false)
+  canMint                  Boolean?     @default(false)
+  canBurn                  Boolean?     @default(false)
+  canChangeOwner           Boolean?     @default(false)
+  canAddSpecialRoles       Boolean?     @default(false)
+  canPause                 Boolean      @default(false)
+  canFreeze                Boolean?     @default(false)
+  canWipe                  Boolean      @default(false)
+  canTransfer              Boolean?
+  canTransferNftCreateRole Boolean?     @default(false)
+  price                    Float?
+  marketCap                Float?
+  supply                   String
+  circulatingSupply        String
+  timestamp                Int?
+  roles                    Boolean?
+}
+
+model Esdt_Assets {
+  id          Int                  @id @default(autoincrement())
+  website     String
+  description String
+  status      Asset_Status
+  pngUrl      String
+  svgUrl      String               @unique
+  socialId    Int?                 @unique
+  social      Esdt_Assets_Socials? @relation(fields: [socialId], references: [id])
+  ESDT        Esdt?
+  ESDTId      Int?
+}
+
+model Esdt_Assets_Socials {
+  id            Int          @id @default(autoincrement())
+  email         String
+  blog          String
+  telegram      String
+  twitter       String
+  whitepaper    String
+  coinmarketcap String
+  coingecko     String
+  ESDTAsset     Esdt_Assets?
+  ESDTAssetId   Int?         @unique
+}

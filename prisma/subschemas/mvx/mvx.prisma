@@ -1,0 +1,39 @@
+// ---------------------
+// ---------------------
+//        Multivers X
+// ---------------------
+// ---------------------
+model Mvx_Constants {
+  id                    Int    @id @default(autoincrement())
+  chainId               String
+  gasPerDataByte        Int
+  minGasLimit           Int
+  minGasPrice           Int
+  minTransactionVersion Int
+}
+
+model Mvx_Economics {
+  id                Int     @id @default(autoincrement())
+  totalSupply       Int
+  circulatingSupply Int
+  staked            Int
+  price             Float
+  marketCap         Int
+  apr               Float
+  topUpApr          Float
+  baseApr           Float
+  tokenMarketCap    BigInt?
+}
+
+model Mvx_Stats {
+  id             Int @id @default(autoincrement())
+  shards         Int
+  blocks         Int
+  accounts       Int
+  transactions   Int
+  scResults      Int
+  refreshRate    Int
+  epoch          Int
+  roundsPassed   Int
+  roundsPerEpoch Int
+}
