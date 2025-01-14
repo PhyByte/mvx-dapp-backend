@@ -1,0 +1,28 @@
+name: Cleanup Docker Images
+
+on:
+  schedule:
+    - cron: "0 0 * * 0" # Run weekly at midnight on Sunday
+
+permissions:
+  packages: write
+
+jobs:
+  cleanup:
+    name: Remove Untagged Docker Images
+    runs-on: ubuntu-latest
+    steps:
+      - name: List untagged images
+        id: list_images
+        run: |
+          curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/orgs/cryptobayspace/packages/container/dapp-backend/versions" \
+            | jq -r '.[] | select(.metadata.container.tags | length == 0) | .id' > image_ids.txt
+
+      - name: Delete untagged images
+        run: |
+          while read -r image_id; do
+            echo "Deleting image $image_id"
+            curl -X DELETE -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              "https://api.github.com/orgs/cryptobayspace/packages/container/dapp-backend/versions/$image_id"
+          done < image_ids.txt
