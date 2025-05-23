@@ -35,7 +35,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   // Start the server
-  await app.listen(SERVER_PORT, () => {
+  await app.listen(SERVER_PORT, '0.0.0.0', () => {
     console.log('\n\n----------------------------');
     console.log(`Server ready at: http://localhost:${SERVER_PORT}`); // Log the server's listening address
     console.log('MultiversX Network: ' + process.env.NETWORK); // Log the network the server is configured to use
